@@ -15,10 +15,11 @@ Sample_Size_Bin <- function(alpha, beta, delta, theta) {
   return(c(n, n_adj))
 }
 
-# Simulation for simple binary endpoint.
+# Simulation for simple endpoint.
 # Need a null hypothesis:
   # H0: delta = 0
-  # H1: delta /ne 0
+  # H1: delta \ne 0
+    #two-sided test.
 
 
 # In terms of a function (need to generate under the null hypothesis):
@@ -30,10 +31,13 @@ TypeI_Error <- function(alpha, beta, delta, sigma, mu, n) {
   ttest <- (x - mu) / (sigma / sqrt(n))
   
   # Critical value of the normal distribution.
-  critval <- qnorm(alpha)
+  critval <- qt(alpha, n - 1)
   
   # TypeI error: Rejecting the null when it is true.
   TypeI <- sum((ttest <= qnorm(alpha)) / n)
+  
+  # Different approach - not sure how this works.
+  TypeI_alt <- sum((t.test(x, mu = mu)))
   
   return(TypeI)
 }
